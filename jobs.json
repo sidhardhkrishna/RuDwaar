@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "poster": "Ram",
+    "role": "harvesting",
+    "location": "Chandanpur",
+    "wage_per_day": 400,
+    "duration_days": 5
+  },
+  {
+    "id": 2,
+    "poster": "LocalWorkshop",
+    "role": "weaving",
+    "location": "Nandgaon",
+    "wage_per_day": 300,
+    "duration_days": 10
+  }
+]

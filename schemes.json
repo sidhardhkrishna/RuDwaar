@@ -1,0 +1,16 @@
+[
+  {
+    "id": 1,
+    "title": "PM-KISAN",
+    "type": "farmer",
+    "benefit": "income support",
+    "link": "https://example.gov/pmkisan"
+  },
+  {
+    "id": 2,
+    "title": "Stree Shakti",
+    "type": "women",
+    "benefit": "entrepreneurship grant",
+    "link": "https://example.gov/streeshakti"
+  }
+]

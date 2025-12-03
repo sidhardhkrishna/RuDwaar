@@ -1,0 +1,19 @@
+[
+  {
+    "id": 1,
+    "name": "Ram",
+    "village": "Chandanpur",
+    "crops": [
+      "wheat",
+      "maize"
+    ]
+  },
+  {
+    "id": 2,
+    "name": "Sita",
+    "village": "Nandgaon",
+    "crops": [
+      "rice"
+    ]
+  }
+]

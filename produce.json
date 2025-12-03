@@ -1,0 +1,18 @@
+[
+  {
+    "id": 1,
+    "farmer_id": 1,
+    "crop": "wheat",
+    "quantity": 100,
+    "price_per_qtl": 1800,
+    "village": "Chandanpur"
+  },
+  {
+    "id": 2,
+    "farmer_id": 2,
+    "crop": "rice",
+    "quantity": 50,
+    "price_per_qtl": 2000,
+    "village": "Nandgaon"
+  }
+]
