@@ -1,0 +1,34 @@
+import json
+from backend import app
+import pytest
+
+@pytest.fixture
+def client():
+    app.config['TESTING'] = True
+    with app.test_client() as c:
+        yield c
+
+def test_health(client):
+    rv = client.get('/health')
+    assert rv.status_code == 200
+    assert rv.get_json()['status']=='ok'
+
+def test_advisory(client):
+    rv = client.post('/advisory', json={'crop':'wheat','location':'Chandanpur'})
+    assert rv.status_code == 200
+    data = rv.get_json()
+    assert 'advisory' in data
+    assert data['crop']=='wheat'
+
+def test_marketplace_get(client):
+    rv = client.get('/marketplace')
+    assert rv.status_code == 200
+    arr = rv.get_json()
+    assert isinstance(arr, list)
+
+def test_jobs_post_get(client):
+    rv = client.post('/jobs', json={'poster':'Test','role':'planting','location':'X','wage_per_day':250,'duration_days':2})
+    assert rv.status_code == 201
+    rv2 = client.get('/jobs')
+    assert rv2.status_code == 200
+    assert any(j['poster']=='Test' for j in rv2.get_json())
