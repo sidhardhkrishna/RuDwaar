@@ -1,0 +1,77 @@
+from flask import Flask, jsonify, request
+import os, json
+
+app = Flask(__name__)
+
+DATA_DIR = os.path.join(os.path.dirname(__file__), '..', 'sample_data')
+def load(fname):
+    path = os.path.join(DATA_DIR, fname)
+    with open(path, 'r') as f:
+        return json.load(f)
+
+farmers = load('farmers.json')
+produce = load('produce.json')
+jobs = load('jobs.json')
+schemes = load('schemes.json')
+
+@app.route('/health')
+def health():
+    return jsonify({'status':'ok'})
+
+@app.route('/advisory', methods=['POST'])
+def advisory():
+    data = request.get_json() or {}
+    crop = data.get('crop','').lower()
+    location = data.get('location','unknown')
+    # simple heuristic advisory
+    advice = "No specific advice available."
+    if crop in ['wheat','maize']:
+        advice = "Apply balanced NPK; monitor for stem borer; optimal irrigation in next 7 days if no rain forecast."
+    elif crop in ['rice']:
+        advice = "Maintain standing water; check for blast disease; follow SRI principles where applicable."
+    return jsonify({'crop':crop,'location':location,'advisory':advice})
+
+@app.route('/marketplace', methods=['GET','POST'])
+def marketplace():
+    global produce
+    if request.method == 'GET':
+        return jsonify(produce)
+    data = request.get_json() or {}
+    new_id = max([p['id'] for p in produce]) + 1 if produce else 1
+    entry = {
+        'id': new_id,
+        'farmer_id': data.get('farmer_id'),
+        'crop': data.get('crop'),
+        'quantity': data.get('quantity'),
+        'price_per_qtl': data.get('price_per_qtl'),
+        'village': data.get('village'),
+    }
+    produce.append(entry)
+    return jsonify(entry), 201
+
+@app.route('/jobs', methods=['GET','POST'])
+def job_routes():
+    global jobs
+    if request.method == 'GET':
+        return jsonify(jobs)
+    data = request.get_json() or {}
+    new_id = max([j['id'] for j in jobs]) + 1 if jobs else 1
+    entry = {
+        'id': new_id,
+        'poster': data.get('poster'),
+        'role': data.get('role'),
+        'location': data.get('location'),
+        'wage_per_day': data.get('wage_per_day'),
+        'duration_days': data.get('duration_days'),
+    }
+    jobs.append(entry)
+    return jsonify(entry), 201
+
+@app.route('/schemes', methods=['GET'])
+def schemes_route():
+    profile = request.args.get('profile_type','farmer')
+    matched = [s for s in schemes if s.get('type')==profile or s.get('type')=='all']
+    return jsonify(matched)
+
+if __name__ == '__main__':
+    app.run(debug=True)
