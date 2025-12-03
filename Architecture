@@ -1,0 +1,32 @@
+# Architecture Document — RuDwaar OS (Prototype)
+
+## Overview
+The prototype is a modular, lightweight web API with the following components:
+- Flask backend providing REST endpoints for advisory, marketplace, jobs, schemes navigator.
+- Sample data in JSON to simulate farmers, produce listings, jobs, and government schemes.
+- Simple rule-based logic for matchmaking and advisory to keep the prototype dependency-light.
+- Tests using pytest.
+
+## Components
+1. **API Layer (Flask)** — Endpoints:
+   - `/health` — status
+   - `/advisory` — returns advisory based on crop and location (rule-based)
+   - `/marketplace` — list and create produce listings
+   - `/jobs` — post and list job requirements
+   - `/schemes` — returns matched schemes (stubbed rules)
+
+2. **Data Layer**
+   - `sample_data/` contains sample JSON files that the API loads at startup.
+
+3. **Business Logic**
+   - Advisory: basic heuristics + sample rules for pest/weather guidance.
+   - Matching: simple filter by skills/distance/wage range.
+
+## Extensibility
+- Replace rule-based advisory with ML models (TensorFlow/PyTorch) or call external APIs.
+- Add authentication (JWT), RBAC for admin panel.
+- Integrate a lightweight frontend (React/Flutter) and mobile offline sync.
+
+## Deployment
+- Containerize with Docker for production.
+- Use a managed database (Postgres) and object storage for images.
